@@ -1,0 +1,12 @@
+- name: Create instances on Exoscale
+  local_action:
+    module: cs_instance
+    name: "privnet-{{ item }}"
+    template: "{{ template }}"
+    root_disk_size: "{{ root_disk_size }}"
+    service_offering: "{{ instance_type }}"
+    ssh_key: "{{ ssh_key }}"
+    security_groups: [ '{{ security_group_name }}' ]
+    zone: "{{ zone }}"
+  with_sequence: count={{ num_nodes }}
+  register: privnet_nodes

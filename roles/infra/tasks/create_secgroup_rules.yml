@@ -1,0 +1,9 @@
+# Doc at http://docs.ansible.com/ansible/cs_securitygroup_rule_module.html
+
+# Rules to be added in the security group
+  - name: SSH to instances
+    local_action:
+     module: cs_securitygroup_rule
+     security_group: "{{ security_group_name }}"
+     start_port: 22
+     end_port: 22
