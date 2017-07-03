@@ -2,7 +2,7 @@
 
 - name: Add NIC to virtual machine
   local_action:
-    module: cs_nic
+    module: cs_instance_nic
     network: privNetForBasicZone
     vm: "privnet-{{ item }}"
     zone: "{{ zone }}"

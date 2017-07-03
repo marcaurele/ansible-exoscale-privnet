@@ -10,7 +10,7 @@
     instance_type: Micro
     root_disk_size: 10
     zone: ch-gva-2
-    privnet_subnet: 10.10.10.1/24
+    privnet_subnet: 10.10.10.0/24
 
   roles:
     - common

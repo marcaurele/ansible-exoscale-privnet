@@ -2,7 +2,7 @@
 
 [privnet_nodes]
 {% for item in privnet_nodes.results %}
-{{ item.default_ip }}
+{{ item.default_ip }} privnet_address={{ item }}
 {% endfor %}
 
 [privnet_nodes:vars]
