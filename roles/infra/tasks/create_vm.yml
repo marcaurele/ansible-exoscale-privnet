@@ -1,4 +1,18 @@
-- name: Create instances on Exoscale
+---
+
+- name: "dhcp server : create"
+  local_action:
+    module: cs_instance
+    name: "{{ dhcp_name }}"
+    template: "{{ template }}"
+    root_disk_size: "{{ root_disk_size }}"
+    service_offering: "{{ instance_type }}"
+    ssh_key: "{{ ssh_key }}"
+    security_groups: [ '{{ security_group_name }}' ]
+    zone: "{{ zone }}"
+  register: privnet_dhcp
+
+- name: "sample vms : create {{ num_nodes }} vms"
   local_action:
     module: cs_instance
     name: "privnet-{{ item }}"
@@ -9,4 +23,5 @@
     security_groups: [ '{{ security_group_name }}' ]
     zone: "{{ zone }}"
   with_sequence: count={{ num_nodes }}
+  when: num_nodes is defined
   register: privnet_nodes

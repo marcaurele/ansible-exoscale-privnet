@@ -1,7 +1,0 @@
----
-- name: Upload ssh public key
-  local_action:
-    module: cs_sshkeypair
-    api_region: "{{ cs_region }}"
-    name: mba-key
-    public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

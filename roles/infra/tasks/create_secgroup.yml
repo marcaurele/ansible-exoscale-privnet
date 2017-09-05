@@ -1,6 +1,6 @@
 # Create security group
 
-  - name: Create Security Group
+  - name: create security group
     local_action:
      module: cs_securitygroup
      name: "{{ security_group_name }}"

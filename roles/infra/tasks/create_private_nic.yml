@@ -1,9 +1,19 @@
+---
 # Add second Nic to virtual machine for private networking
 
-- name: Add NIC to virtual machine
+- name: "dhcp server : add privnet nic"
+  local_action:
+    module: cs_instance_nic
+    network: privNetForBasicZone
+    vm: "{{ dhcp_name }}"
+    zone: "{{ zone }}"
+
+- name: "sample vms : add privnet nic to {{ num_nodes }} vms"
   local_action:
     module: cs_instance_nic
     network: privNetForBasicZone
     vm: "privnet-{{ item }}"
     zone: "{{ zone }}"
   with_sequence: count={{ num_nodes }}
+  when: num_nodes is defined
+

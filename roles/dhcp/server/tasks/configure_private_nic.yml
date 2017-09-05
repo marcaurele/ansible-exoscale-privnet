@@ -1,0 +1,10 @@
+---
+
+- name: upload network interface configuration
+  template:
+    src: privnet.cfg.j2
+    dest: /etc/network/interfaces.d/01-privnet.cfg
+    force: yes
+
+- name: enable privnet interface
+  shell: "ifup ens7"

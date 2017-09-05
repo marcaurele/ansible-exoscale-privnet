@@ -1,0 +1,52 @@
+---
+
+- name: deploy virtual machines
+  hosts: [localhost]
+  connection: local
+  vars:
+    ssh_key: privnet
+    num_nodes: 3
+    dhcp_name: privnet-dhcp-server
+    security_group_name: privnet
+    template: Linux Ubuntu 16.10 64-bit
+    template_filter: featured
+    instance_type: Micro
+    root_disk_size: 10
+    zone: ch-gva-2
+  roles:
+    - common
+    - infra
+
+# Ansible is not yet fully python3 compatible, but those lines can be removed
+# for this playbook
+- name: python 2.7 check
+  hosts: [all]
+  remote_user: root
+  gather_facts: False
+  tasks:
+    - name: Wait for SSH to be up
+      wait_for:
+        port: 22
+        host: "{{ inventory_hostname }}"
+        sleep: 5
+      delegate_to: localhost
+    - name: Ensure python 2.7 is installed for Ansible
+      raw: apt-get install -y python2.7 python-simplejson
+
+- name: configure DHCP server
+  hosts: [privnet_dhcp]
+  vars:
+    - dhcp:
+        privnet_address: 10.11.12.1/27
+        subnet: 10.11.12.0
+        netmask: 255.255.255.224
+        start: 10.11.12.2
+        end: 10.11.12.30
+        router: 10.11.12.1 
+  roles:
+    - dhcp/server
+
+- name: configure sample vms
+  hosts: [privnet_nodes]
+  roles:
+    - dhcp/client

@@ -1,0 +1,21 @@
+---
+
+- name: install packages
+  apt: name={{item}} state=present
+  with_items:
+    - isc-dhcp-server
+
+- name: set listening interfaces
+  lineinfile:
+    path: /etc/default/isc-dhcp-server
+    line: "INTERFACES=\"ens7\""
+    regexp: "^INTERFACES"
+  notify: restart dhcp server
+
+- name: set configuration
+  template:
+    dest: /etc/dhcp/dhcpd.conf
+    src: dhcpd.conf.j2
+    owner: root
+    group: root
+  notify: restart dhcp server

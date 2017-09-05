@@ -1,0 +1,5 @@
+---
+# Install and configure and DHCP server
+
+- import_tasks: configure_private_nic.yml
+- import_tasks: setup_dhcp_server.yml

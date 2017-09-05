@@ -1,0 +1,3 @@
+---
+
+- import_tasks: configure_private_nic.yml

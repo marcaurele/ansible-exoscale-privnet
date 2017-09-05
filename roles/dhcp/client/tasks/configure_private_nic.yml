@@ -1,0 +1,10 @@
+---
+
+- name: copy network interface configuration
+  copy:
+    src: privnet.cfg
+    dest: /etc/network/interfaces.d/01-privnet.cfg
+    force: yes
+
+- name: enable privnet interface
+  shell: "ifup ens7"
