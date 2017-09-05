@@ -50,3 +50,13 @@
   hosts: [privnet_nodes]
   roles:
     - dhcp/client
+
+- name: README
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - debug:
+        msg: "You can log on the machines with:
+          ssh -i ~/.ssh/id_rsa_privnet ubuntu@<VM-IP>"
+  tags: readme
