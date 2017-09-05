@@ -1,4 +1,4 @@
-# Deploy servers on Exoscale and configure their private network interface
+# Deploy on Exoscale and setup a DHCP server for private networking
 
 ## Requirements
 
@@ -7,7 +7,7 @@ First get access to the playbooks by cloning the repository:
     $ git clone git@github.com:marcaurele/ansible-exoscale-privnet.git
     $ cd ansible-exoscale-privnet
 
-All the needed tools (Ansible and cs) are listed in the requirements.txt file and you can install them with a simple:
+All the needed tools (Ansible, cs and sshpubkeys) are listed in the requirements.txt file that you can install in a new virtual environment:
 
     $ pip install -r requirements.txt
 
@@ -19,8 +19,13 @@ CLOUDSTACK_KEY="your api key"
 CLOUDSTACK_SECRET_KEY="your secret key"
 ```
 
+or if you have a `.cloudstack.ini` file you can use `CLOUDSTACK_REGION` environment variable.
+
 
 Now, to run the playbook we use the `ansible-playbook` command:
 
-    $ ansible-playbook create-instances-playbook.yml
+    $ ansible-playbook deploy-privnet-dhcp.yml
+
+    # With a section named ' exoscale' in .cloudstack.ini
+    $ CLOUDSTACK_REGION=exoscale ansible-playbook deploy-privnet-dhcp.yml
 
