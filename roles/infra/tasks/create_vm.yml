@@ -9,6 +9,10 @@
     service_offering: "{{ instance_type }}"
     ssh_key: "{{ ssh_key }}"
     security_groups: [ '{{ security_group_name }}' ]
+    user_data: |
+      #cloud-config
+      manage_etc_hosts: true
+      fqdn: {{ dhcp_name }}
     zone: "{{ zone }}"
   register: privnet_dhcp
 
@@ -21,6 +25,10 @@
     service_offering: "{{ instance_type }}"
     ssh_key: "{{ ssh_key }}"
     security_groups: [ '{{ security_group_name }}' ]
+    user_data: |
+      #cloud-config
+      manage_etc_hosts: true
+      fqdn: privnet-{{ item }}
     zone: "{{ zone }}"
   with_sequence: count={{ num_nodes }}
   when: num_nodes is defined
