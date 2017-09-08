@@ -1,6 +1,5 @@
 # Ansible playbook to deploy a DHCP server for private networking on Exoscale
 
-
 On [Exoscale](https://www.exoscale.ch), the [private
 network](https://community.exoscale.ch/documentation/compute/privnet/) you can
 attach to your VM comes unmanaged. To ease the communication between your
@@ -149,28 +148,46 @@ comes up on your Linux Ubuntu box for the DHCP server to bind to.
 
 ### DHCP/server
 
-This role configures the DHCP server. It one must have a static IP
-configured for its privnet interface `ens7` using for example the gateway IP
-send on to clients if you would want to use it as a router. In
+This role configures the DHCP server. We configure a static IP address for
+its privnet interface `ens7` in
 [configure_private_nic.yml](https://github.com/marcaurele/ansible-exoscale-privnet/blob/master/roles/dhcp/server/tasks/configure_private_nic.yml)
-we upload the static configuration and activate the interface after:
+and activate the interface:
 
 ```yaml
-- name: "dhcp server : add privnet nic"
-  local_action:
-    module: cs_instance_nic
-    network: privNetForBasicZone
-    vm: "{{ dhcp_name }}"
-    zone: "{{ zone }}"
+- name: upload network interface configuration
+  template:
+    src: privnet.cfg.j2
+    dest: /etc/network/interfaces.d/01-privnet.cfg
+    force: yes
 
-- name: "sample vms : add privnet nic to {{ num_nodes }} vms"
-  local_action:
-    module: cs_instance_nic
-    network: privNetForBasicZone
-    vm: "privnet-{{ item }}"
-    zone: "{{ zone }}"
-  with_sequence: count={{ num_nodes }}
-  when: num_nodes is defined
+- name: enable privnet interface
+shell: "ifup ens7"
+```
+
+In [setup_dhcp_server.yml](https://github.com/marcaurele/ansible-exoscale-privnet/blob/master/roles/dhcp/server/tasks/setup_dhcp_server.yml)
+we install ISC DHCP server with a basic configuration to serve IP addresses
+in the range `10.11.12.2` - `10.11.12.30`:
+
+```yaml
+- name: install packages
+  apt: name={{item}} state=present
+  with_items:
+    - isc-dhcp-server
+
+- name: set listening interfaces
+  lineinfile:
+    path: /etc/default/isc-dhcp-server
+    line: "INTERFACES=\"ens7\""
+    regexp: "^INTERFACES"
+  notify: restart dhcp server
+
+- name: set configuration
+  template:
+    dest: /etc/dhcp/dhcpd.conf
+    src: dhcpd.conf.j2
+    owner: root
+    group: root
+notify: restart dhcp server
 ```
 
 ### DHCP/client
