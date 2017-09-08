@@ -42,7 +42,6 @@
         netmask: 255.255.255.224
         start: 10.11.12.2
         end: 10.11.12.30
-        router: 10.11.12.1 
   roles:
     - dhcp/server
 

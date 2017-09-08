@@ -32,5 +32,4 @@ log-facility local7;
 
 subnet {{ dhcp.subnet }} netmask {{ dhcp.netmask }} {
   range {{ dhcp.start }} {{ dhcp.end }};
-  option routers {{ dhcp.router }};
 }
