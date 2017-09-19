@@ -1,4 +1,3 @@
-#ansible>=2.4
-git+https://github.com/ansible/ansible.git
+ansible>=2.4
 cs==1.1.1
 sshpubkeys==2.2.0
