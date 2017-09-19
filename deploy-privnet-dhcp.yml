@@ -20,7 +20,7 @@
 # Ansible is not yet fully python3 compatible, but those lines can be removed
 # for this playbook
 - name: python 2.7 check
-  hosts: [all]
+  hosts: all
   remote_user: root
   gather_facts: False
   tasks:
@@ -51,7 +51,7 @@
     - dhcp/client
 
 - name: README
-  hosts: localhost
+  hosts: [localhost]
   connection: local
   gather_facts: False
   tasks:
