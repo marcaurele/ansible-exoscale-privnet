@@ -32,4 +32,15 @@
     zone: "{{ zone }}"
   with_sequence: count={{ num_nodes }}
   when: num_nodes is defined
+  register: infra_jobs
+  async: 3600
+  poll: 0
+
+- name: "wait for samples vms to be ready"
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
   register: privnet_nodes
+  until: privnet_nodes.finished
+  retries: 300
+  with_items: "{{ infra_jobs.results }}"
+  when: infra_jobs is defined
