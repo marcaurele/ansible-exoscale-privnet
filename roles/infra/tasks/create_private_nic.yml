@@ -16,4 +16,15 @@
     zone: "{{ zone }}"
   with_sequence: count={{ num_nodes }}
   when: num_nodes is defined
+  register: nic_jobs
+  async: 3600
+  poll: 0
 
+- name: "wait for nics to be ready"
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: nics
+  until: nics.finished
+  retries: 300
+  with_items: "{{ nic_jobs.results }}"
+  when: nic_jobs is defined
