@@ -105,6 +105,11 @@ and see the result, run:
 
     $ ansible-playbook deploy-privnet-dhcp.yml
 
+If you wish to deploy those virtual machines in another zone/region, for example
+`de-fra-1` you can overwrite the `zone` variable on the command line:
+
+    $ ansible-playbook deploy-privnet-dhcp.yml -e "zone=de-fra-1"
+
 ## Playbook roles
 
 ### Common
@@ -127,7 +132,7 @@ a VM from Exsocale portal:
     user_data: |
       #cloud-config
       manage_etc_hosts: true
-      fqdn: {{ dhcp_name }}
+      fqdn: {{ zone }}-{{ dhcp_name }}
 ```
 
 The private networking interface is added through
@@ -141,7 +146,7 @@ module:
   local_action:
     module: cs_instance_nic
     network: privNetForBasicZone
-    vm: "{{ dhcp_name }}"
+    vm: "{{ zone }}-{{ dhcp_name }}"
     zone: "{{ zone }}"
 ```
 
