@@ -5,17 +5,16 @@
   local_action:
     module: cs_instance_nic
     network: privNetForBasicZone
-    vm: "{{ dhcp_name }}"
+    vm: "{{ privnet_dhcp.name }}"
     zone: "{{ zone }}"
 
-- name: "sample vms : add privnet nic to {{ num_nodes }} vms"
+- name: "sample vms : add privnet nic to sample vms"
   local_action:
     module: cs_instance_nic
     network: privNetForBasicZone
-    vm: "privnet-{{ item }}"
+    vm: "{{ item.name }}"
     zone: "{{ zone }}"
-  with_sequence: count={{ num_nodes }}
-  when: num_nodes is defined
+  with_items: "{{ privnet_nodes.results }}"
   register: nic_jobs
   async: 3600
   poll: 0
