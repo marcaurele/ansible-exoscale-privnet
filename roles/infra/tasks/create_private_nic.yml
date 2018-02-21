@@ -4,7 +4,7 @@
 - name: "dhcp server : add privnet nic"
   local_action:
     module: cs_instance_nic
-    network: privNetForBasicZone
+    network: "{{ private_network }}"
     vm: "{{ privnet_dhcp.name }}"
     zone: "{{ zone }}"
 

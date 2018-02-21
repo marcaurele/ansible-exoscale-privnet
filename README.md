@@ -145,7 +145,7 @@ module:
 - name: "dhcp server : add privnet nic"
   local_action:
     module: cs_instance_nic
-    network: privNetForBasicZone
+    network: "{{ private_network }}"
     vm: "{{ zone }}-{{ dhcp_name }}"
     zone: "{{ zone }}"
 ```
