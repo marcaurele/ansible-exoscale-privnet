@@ -8,7 +8,7 @@
 - name: set listening interfaces
   lineinfile:
     path: /etc/default/isc-dhcp-server
-    line: "INTERFACES=\"ens7\""
+    line: "INTERFACES=\"eth1\""
     regexp: "^INTERFACES"
   notify: restart dhcp server
 

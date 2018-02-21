@@ -151,13 +151,13 @@ module:
 ```
 
 This instructs Ansible to attach a new NIC to VM `{{ dhcp_name }}` in the
-`{{zone }}` zone on the `privNetForBasicZone` network. A new `ens7` interface
+`{{zone }}` zone on the `privNetForBasicZone` network. A new `eth1` interface
 comes up on your Linux Ubuntu box for the DHCP server to bind to.
 
 ### DHCP/server
 
 This role configures the DHCP server. We configure a static IP address for
-its privnet interface `ens7` in
+its privnet interface `eth1` in
 [`configure_private_nic.yml`](https://github.com/marcaurele/ansible-exoscale-privnet/blob/master/roles/dhcp/server/tasks/configure_private_nic.yml)
 and activate the interface:
 
@@ -169,7 +169,7 @@ and activate the interface:
     force: yes
 
 - name: enable privnet interface
-shell: "ifup ens7"
+shell: "ifup eth1"
 ```
 
 In [`setup_dhcp_server.yml`](https://github.com/marcaurele/ansible-exoscale-privnet/blob/master/roles/dhcp/server/tasks/setup_dhcp_server.yml)
@@ -185,7 +185,7 @@ in the range `10.11.12.2` - `10.11.12.30`:
 - name: set listening interfaces
   lineinfile:
     path: /etc/default/isc-dhcp-server
-    line: "INTERFACES=\"ens7\""
+    line: "INTERFACES=\"eth1\""
     regexp: "^INTERFACES"
   notify: restart dhcp server
 
@@ -213,7 +213,7 @@ for the privnet and enables it:
     force: yes
 
 - name: enable privnet interface
-  shell: "ifup ens7"
+  shell: "ifup eth1"
 ```
 
 ## Going further

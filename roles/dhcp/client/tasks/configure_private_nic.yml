@@ -7,4 +7,4 @@
     force: yes
 
 - name: enable privnet interface
-  shell: "ifup ens7"
+  shell: "ifup eth1"
