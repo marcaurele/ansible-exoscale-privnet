@@ -8,11 +8,12 @@
     num_nodes: 3
     dhcp_name: privnet-dhcp-server
     security_group_name: privnet
-    template: Linux Ubuntu 16.10 64-bit
+    template: Linux Ubuntu 16.04 LTS 64-bit
     template_filter: featured
     instance_type: Micro
     root_disk_size: 10
     zone: ch-gva-2
+    private_network: privNetForBasicZone
   roles:
     - common
     - infra

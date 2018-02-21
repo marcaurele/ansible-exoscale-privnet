@@ -11,7 +11,7 @@
 - name: "sample vms : add privnet nic to sample vms"
   local_action:
     module: cs_instance_nic
-    network: privNetForBasicZone
+    network: "{{ private_network }}"
     vm: "{{ item.name }}"
     zone: "{{ zone }}"
   with_items: "{{ privnet_nodes.results }}"
