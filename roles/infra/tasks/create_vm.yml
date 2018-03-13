@@ -9,6 +9,8 @@
     service_offering: "{{ instance_type }}"
     ssh_key: "{{ ssh_key }}"
     security_groups: [ '{{ security_group_name }}' ]
+    networks:
+      - "{{ private_network }}"
     user_data: |
       #cloud-config
       manage_etc_hosts: true
@@ -25,6 +27,8 @@
     service_offering: "{{ instance_type }}"
     ssh_key: "{{ ssh_key }}"
     security_groups: [ '{{ security_group_name }}' ]
+    networks:
+      - "{{ private_network }}"
     user_data: |
       #cloud-config
       manage_etc_hosts: true

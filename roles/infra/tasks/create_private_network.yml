@@ -1,0 +1,8 @@
+---
+
+- name: create private network
+  cs_network:
+    name: "{{ private_network }}"
+    state: present
+    zone: "{{ zone }}"
+    network_offering: "PrivNet"

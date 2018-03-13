@@ -13,7 +13,7 @@
     instance_type: Micro
     root_disk_size: 10
     zone: ch-gva-2
-    private_network: privNetForBasicZone
+    private_network: "dhcp-privnet-{{ zone }}"
   roles:
     - common
     - infra
