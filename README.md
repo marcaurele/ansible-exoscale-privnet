@@ -150,6 +150,28 @@ module:
     zone: "{{ zone }}"
 ```
 
+It can also be directly attached to the VM on the deployment step in
+[`create_vm.yml`](https://github.com/marcaurele/ansible-exoscale-privnet/blob/master/roles/infra/tasks/create_vm.yml)
+with the `networks` attribute:
+
+```yaml
+- name: "dhcp server : create"
+  local_action:
+    module: cs_instance
+    name: "{{ zone }}-{{ dhcp_name }}"
+    template: "{{ template }}"
+    root_disk_size: "{{ root_disk_size }}"
+    service_offering: "{{ instance_type }}"
+    ssh_key: "{{ ssh_key }}"
+    security_groups: [ '{{ security_group_name }}' ]
+    networks:
+      - "{{ private_network }}"
+    user_data: |
+      #cloud-config
+      manage_etc_hosts: true
+      fqdn: {{ zone }}-{{ dhcp_name }}
+    zone: "{{ zone }}"
+```
 This instructs Ansible to attach a new NIC to VM `{{ dhcp_name }}` in the
 `{{zone }}` zone on the `privNetForBasicZone` network. A new `eth1` interface
 comes up on your Linux Ubuntu box for the DHCP server to bind to.

@@ -3,5 +3,6 @@
   - import_tasks: create_secgroup_rules.yml
   - import_tasks: create_private_network.yml
   - import_tasks: create_vm.yml
-  - import_tasks: create_private_nic.yml
+# Not needed anymore since the private network can be added on VM creation
+#  - import_tasks: create_private_nic.yml
   - import_tasks: create_inv.yml
