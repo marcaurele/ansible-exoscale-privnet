@@ -1,27 +1,31 @@
+---
+
 # Create inventory file
 
-# Refresh in memory inventory if playbook was run without inventory file
 - name: create inventory file
   template: src=inventory.j2 dest=./inventory
   tags: inventory
 
+# Refresh in memory inventory if playbook was run without inventory file
 - name: refresh inventory to ensure new instances exist in inventory
   meta: refresh_inventory
   tags: inventory
 
-- name: refresh in memory inventory with privnet dhcp server
-  add_host:
-    groups: privnet_dhcp
-    hostname: "{{ privnet_dhcp.default_ip }}"
-    ansible_ssh_private_key_file: "~/.ssh/id_rsa_privnet"
-    # ansible_host: "{{ dhcp_name  }}"
+# - name: refresh in memory inventory with privnet dhcp server
+#   add_host:
+#     groups: privnet_dhcp
+#     hostname: "{{ privnet_dhcp.default_ip }}"
+#     ansible_ssh_private_key_file: "~/.ssh/id_rsa_privnet"
+#     ansible_host: "{{ privnet_dhcp.default_ip }}"
+#     ansible_python_interpreter: /usr/bin/python3
 
-- name: refresh in memory inventory with sample vms
-  add_host:
-    groups: privnet_nodes
-    hostname: "{{ item.default_ip }}"
-    ansible_ssh_private_key_file: "~/.ssh/id_rsa_privnet"
-    # ansible_host: "{{ item.name }}"
-  with_items:
-    - "{{ privnet_nodes.results }}"
+# - name: refresh in memory inventory with sample vms
+#   add_host:
+#     groups: privnet_nodes
+#     hostname: "{{ item.default_ip }}"
+#     ansible_ssh_private_key_file: "~/.ssh/id_rsa_privnet"
+#     ansible_host: "{{ item.default_ip }}"
+#     ansible_python_interpreter: /usr/bin/python3
+#   with_items:
+#     - "{{ privnet_nodes.results }}"
 
