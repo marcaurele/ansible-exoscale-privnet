@@ -40,7 +40,7 @@
   async: 3600
   poll: 0
 
-- name: "wait for samples vms to be ready"
+- name: wait for samples vms to be ready
   async_status:
     jid: "{{ item.ansible_job_id }}"
   register: privnet_nodes
@@ -48,3 +48,9 @@
   retries: 300
   with_items: "{{ infra_jobs.results }}"
   when: infra_jobs is defined
+
+- name: wait for SSH to be up
+  wait_for:
+    port: 22
+    host: "{{ privnet_dhcp.default_ip }}"
+    sleep: 5
