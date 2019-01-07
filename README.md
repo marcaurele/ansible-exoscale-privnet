@@ -22,11 +22,12 @@ First you have to clone the repository:
     $ git clone https://github.com/marcaurele/ansible-exoscale-privnet.git
     $ cd ansible-exoscale-privnet
 
-Create a new [virtual environment for Python](https://virtualenv.pypa.io),
-preferably with Python 2.7 since Ansible is not fully compatible with
-Python 3.x:
+Create a new [virtual environment for Python](https://virtualenv.pypa.io):
 
+    # For python 2
     $ virtualenv -p <location_of_python_2.7> venv
+    # For python 3
+    $ python3 -m venv venv
     # Activate the virtual environment
     $ . ./venv/bin/activate
 
@@ -189,9 +190,11 @@ and activate the interface:
     src: privnet.cfg.j2
     dest: /etc/network/interfaces.d/01-privnet.cfg
     force: yes
+  register: privnet_cfg
 
 - name: enable privnet interface
-shell: "ifup eth1"
+  shell: "ifup eth1"
+  when: privnet_cfg.changed
 ```
 
 In [`setup_dhcp_server.yml`](https://github.com/marcaurele/ansible-exoscale-privnet/blob/master/roles/dhcp/server/tasks/setup_dhcp_server.yml)
@@ -200,9 +203,10 @@ in the range `10.11.12.2` - `10.11.12.30`:
 
 ```yaml
 - name: install packages
-  apt: name={{item}} state=present
-  with_items:
-    - isc-dhcp-server
+  apt:
+    name:
+      - isc-dhcp-server
+    state: present
 
 - name: set listening interfaces
   lineinfile:
@@ -217,7 +221,7 @@ in the range `10.11.12.2` - `10.11.12.30`:
     src: dhcpd.conf.j2
     owner: root
     group: root
-notify: restart dhcp server
+  notify: restart dhcp server
 ```
 
 ### DHCP/client
@@ -233,9 +237,11 @@ for the privnet and enables it:
     src: privnet.cfg
     dest: /etc/network/interfaces.d/01-privnet.cfg
     force: yes
+  register: privnet_cfg
 
 - name: enable privnet interface
   shell: "ifup eth1"
+  when: privnet_cfg.changed
 ```
 
 ## Going further
