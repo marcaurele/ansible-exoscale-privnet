@@ -17,22 +17,7 @@
   roles:
     - common
     - infra
-
-# Ansible is not yet fully python3 compatible, but those lines can be removed
-# for this playbook
-- name: python 2.7 check
-  hosts: all
-  remote_user: root
-  gather_facts: False
-  tasks:
-    - name: Wait for SSH to be up
-      wait_for:
-        port: 22
-        host: "{{ inventory_hostname }}"
-        sleep: 5
-      delegate_to: localhost
-    - name: Ensure python 2.7 is installed for Ansible
-      raw: apt-get install -y python2.7 python-simplejson
+  tags: common, infra
 
 - name: configure DHCP server
   hosts: [privnet_dhcp]
@@ -45,11 +30,13 @@
         end: 10.11.12.30
   roles:
     - dhcp/server
+  tags: server
 
 - name: configure sample vms
   hosts: [privnet_nodes]
   roles:
     - dhcp/client
+  tags: client
 
 - name: README
   hosts: [localhost]
