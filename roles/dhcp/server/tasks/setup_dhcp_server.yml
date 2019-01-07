@@ -1,9 +1,12 @@
 ---
 
 - name: install packages
-  apt: name={{item}} state=present
-  with_items:
-    - isc-dhcp-server
+  apt:
+    name:
+      - isc-dhcp-server
+    state: present
+    autoclean: yes
+    update_cache: yes
 
 - name: set listening interfaces
   lineinfile:
