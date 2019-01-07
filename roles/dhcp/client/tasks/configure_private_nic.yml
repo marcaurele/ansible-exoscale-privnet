@@ -5,6 +5,8 @@
     src: privnet.cfg
     dest: /etc/network/interfaces.d/01-privnet.cfg
     force: yes
+  register: privnet_cfg
 
 - name: enable privnet interface
   shell: "ifup eth1"
+  when: privnet_cfg.changed
